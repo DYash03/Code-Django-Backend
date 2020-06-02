@@ -1,0 +1,144 @@
+{% extends 'learn/base.html' %}
+{% block proactive %} active {% endblock proactive %}
+{% block title %}(Programing){% endblock %}
+{% block body %} {% load humanize %}
+<div class="container">
+  <br />
+  <br />
+
+  <h4 class="pb-4 mb-4 font-italic border-bottom">
+    {{program.asked}}
+  </h4>
+  <div class="blog-post">
+    <h5 class="blog-post-title">{{program.name}}</h5>
+    <div class="fb-like" data-href="http://127.0.0.1:8000/programming/{{program.slug}}" data-width="400"
+      data-layout="button_count" data-action="like" data-size="large" data-share="true"></div>
+    <br />
+    <p class="blog-post-title d-inline">
+      From - {{program.recommended}}
+    </p>
+    <p class="blog-post-title d-inline">
+      , Posted on - {{program.pub_date}}
+    </p>
+
+    <p>{{program.description}}</p>
+    <h6>Sample Input</h6>
+    <p>{{program.Input}}</p>
+    <h6>Sample Output</h6>
+    <p>{{program.Output}}</p>
+    <h6>Starting point</h6>
+    <p>{{program.starting_point}}</p>
+  </div>
+  <h5>Try code here:</h5>
+  <br />
+  <iframe src="https://trinket.io/embed/python/673f8e3a4a?start=result" width="100%" height="600" frameborder="0"
+    marginwidth="0" marginheight="0" allowfullscreen></iframe>
+  <br />
+  <br />
+  <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false"
+    aria-controls="collapseExample">
+    Answer
+  </a>
+  {% if user.is_authenticated %}
+  <div class="collapse" id="collapseExample">
+    <div class="card card-body text-dark">{{program.answer}}</div>
+  </div>
+  {% else %}
+  <div class="collapse" id="collapseExample">
+    <div class="card card-body text-dark">To access answer login first.</div>
+  </div>
+  {% endif %}
+</div>
+{% load extras %} {% load static %}
+<div class="container">
+  <br />
+  <hr />
+  <h2>Comments ({{comments.count}})</h2>
+  <div class="my-2">
+    {% if user.is_authenticated %}
+    <form action="/programming/postComment" method="post">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="comment">Post your comment here:</label>
+        <textarea id="comment" name="comment" placeholder="Enter comment here" class="form-control" cols="30"
+          rows="5"></textarea>
+      </div>
+      <input type="hidden" id="postSno" name="postSno" value="{{program.pro_id}}" />
+      <input type="hidden" name="ParentSno" value="" />
+      <button type="submit" class="btn btn-primary float-right text-light">
+        Submit
+      </button>
+    </form>
+    <br />
+    <br />
+    {% else %}
+    <p>Login to post comment.</p>
+    {% endif %}
+  </div>
+  {% for comment in comments %}
+  <div class="row my-3 border border-dark p-1 mx-0">
+    <div class="col-md-1">
+      <img src="{% static 'learn/user.jpg'%}" alt="..." class="d-block" width="50" height="50" />
+    </div>
+    <div class="col-md-11">
+      <b> {{comment.user.username}}</b>
+      <div>{{comment.timestamp | naturaltime}}</div>
+      <div>{{comment.comment}}</div>
+      <div class="reply mx-0">
+        <button class="btn btn-primary text-light my-2 btn-sm d-inline mr-2" type="button" data-toggle="collapse"
+          data-target="#replyBox{{comment.sno}}" aria-expanded="false" aria-controls="replyBox{{comment.sno}}">
+          View Replies
+        </button>
+        {% if comment.user.username == user.username %}
+        <form method="post" action="{% url 'programming:deleteComment' comment.sno %}" class="d-inline">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+        </form>
+        {% endif %}
+        <div class="collapse" id="replyBox{{comment.sno}}">
+          <div class="card card-body my-2">
+            {% if user.is_authenticated %}
+            <form action="/programming/postComment" method="post">
+              {% csrf_token %}
+              <div class="form-group">
+                <textarea id="comment" name="comment" placeholder="Enter reply here" class="form-control" cols="30"
+                  rows="3"></textarea>
+                <input type="hidden" name="ParentSno" value="{{comment.sno}}" />
+              </div>
+              <input type="hidden" id="postSno" name="postSno" value="{{program.pro_id}}" />
+              <button type="submit" class="btn btn-primary text-light float-right">
+                Submit
+              </button>
+            </form>
+            {% else %}
+            <p class="text-dark">Login to post reply.</p>
+            {% endif %}
+            <div class="replies my-2">
+              {% for reply in replyDict|get_val:comment.sno%}
+              <div class="row my-3 border text-dark border-dark p-1 mx-0">
+                <div class="col-md-1">
+                  <img src="{% static 'learn/user.jpg'%}" alt="..." class="d-block" width="50" height="50" />
+                </div>
+                <div class="col-md-11">
+                  <b> {{reply.user.username}}</b>
+                  <div>{{reply.timestamp | naturaltime}}</div>
+                  <div>{{reply.comment}}</div>
+                  {% if reply.user.username == user.username %}
+                  <form method="post" action="{% url 'programming:deleteComment' reply.sno %}" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                  </form>
+                  {% endif %}
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

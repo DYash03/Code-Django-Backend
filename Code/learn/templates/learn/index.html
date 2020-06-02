@@ -1,0 +1,72 @@
+{% extends 'learn/base.html' %}
+{% block homeactive %} active {% endblock homeactive %}
+{% block title %}(Home){% endblock %}
+{% block body %}
+<main role="main">
+  <!-- Main jumbotron for a primary marketing message or call to action -->
+  <div class="jumbotron bg-primary">
+    <div class="container">
+      <h1 class="text-center" style="font-weight: normal;">
+        Welcome to the Ocean of Learning
+      </h1>
+      <p>
+        Ocean of Learning is an online platform where you can learn competitive
+        programing, latest technologies and at the same time challenge others
+        with your own questions. It is a not-for-profit educational initiative.
+        It is a global programming community that fosters learning and friendly
+        competition, built on top of the world’s largest competitive programming
+        platform.Ocean of Learning was created as a platform to help programmers
+        make it big in the world of algorithms and computer programming.
+      </p>
+      <p class="text-center">
+        <a class="btn btn-dark btn-lg" href="{%url 'learn:About'%}" role="button">Learn more »</a>
+      </p>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <h2>Programing</h2>
+        <p>
+          Our programing section is the top highlight of our website. We in
+          Ocean of Learning not only provides every challenging question asked
+          by dream companies like Google, Microsoft, Amazon etc. but also top
+          questions from websites like Hakerank, Codechef are also available
+          here.
+        </p>
+        <p>
+          <a class="btn btn-secondary" href="{%url 'programming:pro_list'%}" role="button">View details »</a>
+        </p>
+      </div>
+      <div class="col-md-4">
+        <h2>Technology</h2>
+        <p>
+          Technology is another top highlight of our website. We not only help
+          in developing coding skills but also helps in providing effective
+          knowledge about latest technologies and programming languages. Choose
+          the language you want to learn select some technology click on links
+          referring to the course and there you go.
+        </p>
+        <p>
+          <a class="btn btn-secondary" href="{%url 'learn:tech_list'%}" role="button">View details »</a>
+        </p>
+      </div>
+      <div class="col-md-4">
+        <h2>Editor</h2>
+        <p>
+          Editor is a special section of our website. After you learn some
+          language and technology, practiced some questions on it, now its your
+          time to contribute. Under editor section you can post your own
+          programming questions. These questions may be previously asked or
+          picked up from some website.
+        </p>
+        <p>
+          <a class="btn btn-secondary" href="{%url 'learn:editor'%}" role="button">View details »</a>
+        </p>
+      </div>
+    </div>
+  </div>
+  <!-- /container -->
+</main>
+{% endblock%}

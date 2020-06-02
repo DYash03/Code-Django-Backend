@@ -1,0 +1,101 @@
+{% extends 'learn/base.html' %}
+{% block edtactive %}active{% endblock edtactive %}
+{% block title %}(Editor){% endblock %}
+{% block body %}
+<div class="container">
+  <br />
+  <h2 class="text-center text-white bg-primary m-0">
+    Welcome to the Editor section
+  </h2>
+  <h6 class="text-center text-white bg-primary m-0">
+    Now everyone can be an editor
+  </h6>
+  <br />
+
+  <div class="brod">
+    <h4>Given below are the guidelines required to be an editor :</h4>
+    <ol>
+      <li>
+        <p>Enter your full name.</p>
+      </li>
+      <li>
+        <p>Enter the name or the title of your program name.</p>
+      </li>
+      <li>
+        <p>
+          Mention your program source. If it is copied from Hakerank , CodeChef
+          etc then mention it. If source is not known for any reason write
+          unknow.
+        </p>
+      </li>
+      <li>
+        <p>Enter your email next.</p>
+      </li>
+      <li>
+        <p>Enter the description of your program.</p>
+      </li>
+      <li>
+        <p>Next provide your solution.</p>
+        <p>
+          Note: It is not necessary that same solution will be posted. But if
+          the solution is wrong your code will not be uploaded.
+        </p>
+      </li>
+      <li>
+        <p>Finally give atleast 1 sample input and sample out respectively.</p>
+      </li>
+    </ol>
+  </div>
+  <br />
+
+  <form action="/editor" method="post">
+    {% csrf_token %}
+    <input class="form-control" type="text" name="name" id="name" placeholder="Your Full Name" required="" />
+    <br />
+    <br />
+    <input class="form-control" type="text" name="pname" id="pname" placeholder="Name or the title of your program"
+      required="" />
+    <br />
+    <br />
+
+    <input class="form-control" type="text" name="source" id="source"
+      placeholder="Source of your program (eg. Google, Twitter etc.)" required="" />
+    <br />
+    <br />
+    <input class="form-control" type="email" name="email" id="email" placeholder="Email" required="" />
+    <br />
+    <br />
+    <textarea class="form-control" name="desc" id="desc" rows="10" cols="151" required=""
+      placeholder="Program description"></textarea>
+    <br />
+    <br />
+    <textarea class="form-control" name="sol" id="sol" rows="10" cols="151" required=""
+      placeholder="Solution"></textarea>
+    <br />
+    <br />
+    <textarea class="form-control" name="si" id="si" rows="5" cols="151" required=""
+      placeholder="Sample Input"></textarea>
+    <br />
+    <br />
+
+    <textarea class="form-control" name="so" id="so" rows="5" cols="151" required=""
+      placeholder="Sample Output"></textarea>
+    <br />
+    <br />
+    {% if user.is_authenticated %}
+    <button onclick="edit()" class="btn btn-primary btn-lg" type="submit">
+      Submit
+    </button>
+    {% else %}
+    <div class="jumbotron jumbotron-fluid bg-primary">
+      <div class="container">
+        <h3>Ocean of Learning</h3>
+        <p class="lead">
+          To submit response login first.
+        </p>
+      </div>
+    </div>
+    {% endif %}
+  </form>
+</div>
+{% endblock %}

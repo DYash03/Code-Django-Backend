@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="description"
+    content="Ocean of Learning is an online platform where you can learn competitive programing, latest technologies and at the same time challenge others with your own questions." />
+  <meta name="keywords" content="Ocean of Learning,programing,courses,competitive,technologies" />
+  <meta name="author" content="Yash Dixit" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'learn/style.css'%} " />
+  <link rel="stylesheet" href="{% static 'learn/style1.css'%} " />
+  <title>Ocean of Learning {% block title %}{% endblock %}</title>
+  <link rel="icon" href="{% static 'learn/logo.png'%}" type="image/x-icon">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+    <a class="navbar-brand" href="{%url 'learn:home'%}">Ocean of Learning</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item {% block homeactive %}{% endblock homeactive %}">
+          <a class="nav-link" href="{%url 'learn:home'%}">Home</a>
+        </li>
+        <li class="nav-item {% block proactive %}{% endblock proactive %}">
+          <a class="nav-link" href="{%url 'programming:pro_list'%}">Programing</a>
+        </li>
+        <li class="nav-item {% block tchactive %}{% endblock tchactive %}">
+          <a class="nav-link" href="{%url 'learn:tech_list'%}">Courses</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            Themes
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <p class="dropdown-item" onclick="light()">Light Mode</p>
+            <p class="dropdown-item" onclick="dark()">Dark Mode</p>
+            <p class="dropdown-item" onclick="dimdark()">Dim Dark Mode</p>
+
+        </li>
+        <li class="nav-item {% block edtactive %}{% endblock edtactive %}">
+          <a class="nav-link" href="{%url 'learn:editor'%}">Editor</a>
+        </li>
+        <li class="nav-item"></li>
+        <li class="nav-item {% block abtactive %}{% endblock abtactive %}">
+          <a class="nav-link" href="{%url 'learn:About'%}">About</a>
+        </li>
+        <li class="nav-item {% block cntactive %}{% endblock cntactive %}">
+          <a class="nav-link" href="{%url 'learn:Contact'%}">Contact</a>
+        </li>
+      </ul>
+      {% if user.is_authenticated %}
+      <h6 class="text-light mr-2 ml-2">Welcome {{request.user}}</h6>
+      <a href="/logout" class="btn btn-danger text-light ml-2 mr-2">Logout</a>
+      {% else %}
+      <button type="button" class="btn btn-danger mr-2 text-white" data-toggle="modal" data-target="#login">
+        Login
+      </button>
+      <button type="button" class="btn btn-danger mr-2 ml-1 text-white" data-toggle="modal" data-target="#signupModal">
+        SignUp
+      </button>
+      {% endif %}
+    </div>
+  </nav>
+  {% for message in messages %}
+
+  <div class="alert alert-{{message.tags}} alert-dismissible fade show mb-0" role="alert">
+    <strong>Message: </strong>{{message}}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  {% endfor %}
+
+  <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-dark" id="signupModal">
+              Signup here
+            </h5>
+          </div>
+          <div class="modal-body">
+            <form action="/signup" method="post">
+              {% csrf_token %}
+              <div class="form-group text-dark">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Username" required />
+              </div>
+              <div class="form-group text-dark">
+                <label for="fname">First Name</label>
+                <input type="name" class="form-control" id="fname" name="fname" placeholder="First Name" required />
+              </div>
+              <div class="form-group text-dark">
+                <label for="lname">Last Name</label>
+                <input type="name" class="form-control" id="lname" name="lname" placeholder="Last Name" required />
+              </div>
+              <div class="form-group text-dark">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com"
+                  required />
+              </div>
+              <div class="form-group text-dark">
+                <label for="fpassword">Password</label>
+                <input type="password" class="form-control" id="fpassword" name="fpassword"
+                  placeholder="Enter your Password" required />
+              </div>
+              <div class="form-group text-dark">
+                <label for="cpassword">Confirm Password</label>
+                <input type="password" class="form-control" id="cpassword" name="cpassword"
+                  placeholder="Enter your Password again" required />
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+          <div class="modal-footer"></div>
+          <h6 class="text-right mr-3 text-dark">
+            Ocean of Learning
+          </h6>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="login" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-dark" id="login">Login here</h5>
+          </div>
+          <div class="modal-body">
+            <form action="/login" method="post">
+              {% csrf_token %}
+              <div class="form-group text-dark">
+                <label for="lusername">Username</label>
+                <input type="username" class="form-control" id="logusername" placeholder="Username" name="logusername"
+                  required />
+              </div>
+
+              <div class="form-group text-dark">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="logpassword" placeholder="Enter your Password"
+                  name="logpassword" required />
+              </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+          </div>
+          <div class="modal-footer"></div>
+          <h6 class="text-right text-dark mr-3">
+            Ocean of Learning
+          </h6>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% block body %} {% endblock %}
+  <br />
+  <br />
+  <br />
+  <br />
+  <footer class="border-top border-grey">
+    <div class="container">
+      <h5 class="text-center m-2">© Ocean of Learning 2020</h5>
+    </div>
+  </footer>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+  <div id="fb-root"></div>
+  <script async defer crossorigin="anonymous"
+    src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v7.0"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+    crossorigin="anonymous"></script>
+  <script src="{% static 'learn/script.js'%}"></script>
+</body>
+
+</html>

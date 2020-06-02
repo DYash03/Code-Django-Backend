@@ -1,0 +1,54 @@
+{% extends 'learn/base.html' %}
+{% block tchactive %}active{% endblock tchactive %}
+{% block title %}(Courses){% endblock %}
+{% block body %}
+<div class="container">
+  <h3 class="pb-4 mb-4 font-italic border-bottom">
+    <br />
+    <br />
+
+    {{tech.category}}
+  </h3>
+  <div class="blog-post">
+    <h4 class="blog-post-title">{{tech.blog_name}}</h4>
+    <p class="blog-post-title ">
+      Posted on - {{tech.pub_date}} <b> ({{tech.views}} Views)</b>
+    </p>
+    <br>
+    <img class="bd-placeholder-img float-left mr-3 mb-3 mt-0" src="/media/{{tech.image}}" width="300" height="250"
+      xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img"
+      aria-label="Placeholder: Thumbnail" />
+    <div class="fb-like" data-href="http://127.0.0.1:8000/learn/{{tech.slug}}" data-width="400"
+      data-layout="button_count" data-action="like" data-size="large" data-share="true"></div>
+    <h5>Introduction</h5>
+    <p>{{tech.description_1}}</p>
+    <h5>Features:</h5>
+    <p>{{tech.description_2}}</p>
+    <h5>Why {{tech.slug}} ?</h5>
+    <p>{{tech.description_3}}</p>
+    <h5 id="course{{tech.slug}}">
+      Access full course of {{tech.slug}} for free from below :
+    </h5>
+    {% if user.is_authenticated %}
+    <p>
+      <a href="{{tech.ref_link_1}}" target="_blank">Link 1 : {{tech.slug}} Full Course 1
+      </a>
+    </p>
+    <p>
+      <a href="{{tech.ref_link_2}}" target="_blank">Link 2 : {{tech.slug}} Full Course 2
+      </a>
+    </p>
+    {% else %}
+    <div class="jumbotron jumbotron-fluid bg-primary">
+      <div class="container">
+        <h3>Ocean of Learning</h3>
+        <p class="lead">
+          To access course login first.
+        </p>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <br />
+</div>
+{% endblock %}
